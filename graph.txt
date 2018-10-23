@@ -1,0 +1,18 @@
+#图的类型,0:有向图，1:无向图，2:有向网，3:无向网
+type:1
+#顶点集合
+Vertex:a b c d e f g h
+#边集
+Arc:a c 10
+a e 6
+a h 4
+b d 2
+c d 7
+c g 4
+c h 10
+d f 9
+d g 1
+e g 5
+e h 3
+f g 2
+h f 1
