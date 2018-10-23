@@ -4,15 +4,15 @@ type:1
 Vertex:a b c d e f g h
 #边集
 Arc:a c 10
-a e 6
-a h 4
-b d 2
-c d 7
-c g 4
-c h 10
-d f 9
-d g 1
-e g 5
-e h 3
-f g 2
-h f 1
+Arc:a e 6
+Arc:a h 4
+Arc:b d 2
+Arc:c d 7
+Arc:c g 4
+Arc:c h 10
+Arc:d f 9
+Arc:d g 1
+Arc:e g 5
+Arc:e h 3
+Arc:f g 2
+Arc:h f 1
