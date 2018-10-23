@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
 /***************************接连矩阵结构********************************/
 typedef struct nearLink{
@@ -27,6 +28,9 @@ void CreateHeadArr(Vertex *header,char *content);
 
 //构建弧列表
 void CreateArcArr(Vertex *header,char *content,int type);
+
+//遍历接连表
+void visitVerLink(Vertex *header);
 /*******************************end*************************************/
 
 /***************************十字链表结构********************************/

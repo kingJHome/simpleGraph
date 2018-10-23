@@ -19,16 +19,18 @@ int main(int argc,char *argv[]){
 			rlen = 0;
 			
 			replaceNewLine(content);
+			char *target = strchr(content,':') + 1;
 			if( strstr(content,"type") == content ){
-				type = atoi((strchr(content,':') + 1));
+				type = atoi(target);
 			}else if( strstr(content,"Vertex") == content ){
-				CreateHeadArr(&aver,strchr(content,':')+1);
+				CreateHeadArr(&aver,target);
 			}else if( strstr(content,"Arc") == content ){
-				CreateArcArr(&aver,strchr(content,':')+1,type);
+				CreateArcArr(&aver,target,type);
 			}
 		}
 
 		fclose(fp);
+		visitVerLink(&aver);
 	}
 
 	return 0;
