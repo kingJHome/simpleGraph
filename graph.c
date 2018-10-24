@@ -253,6 +253,7 @@ void BFSvisitVerLink(Vertex *header,int startPos){
 	printf("\n");
 }
 
+//从顶点出发，选择花费小的顶点
 int selectMin(Closedge *arrs,int len){
 	int st = 0,rt = 0,mins;
 	
@@ -274,7 +275,8 @@ int selectMin(Closedge *arrs,int len){
 	return rt;
 }
 
-void MiniSpanTree_PRIM(Vertex *header,int startPos){
+//普里姆算法
+void MiniSpanTree_Prim(Vertex *header,int startPos){
 	if( header && header->length ){
 		int milen = header->length,
 			curPos = 0,
@@ -316,6 +318,96 @@ void MiniSpanTree_PRIM(Vertex *header,int startPos){
 	}
 }
 
+//不是在同一个连通分量上
+int notInOnePath(SelectArc *sted,int curlen,int head,int tail){
+	int notin = 1,headin = 0,tailin = 0;
+	
+	if( curlen ){
+		for(int i = 0; i < curlen; ++i){
+			if( !headin && (sted[i].head==head || sted[i].tail==head) ){
+				headin = 1;
+			}
+			if( !tailin && (sted[i].head==tail || sted[i].tail==tail) ){
+				tailin = 1;
+			}
+			if( headin && tailin){
+				notin = 0;
+				break;
+			}
+		}
+	}
+
+	return notin;
+}
+
+//选择权值最小的弧
+SelectArc selectMinArc(HeadArray *arrs,int len,SelectArc *sted,int curlen){
+	int mins = -1;
+	SelectArc rt;
+
+	for(int i = 0; i < len; ++i){
+		NearLink *curLink = arrs[i].next;
+		for( ; curLink; curLink = curLink->next){
+			if( mins==-1 || curLink->weight<mins&&notInOnePath(sted,curlen,i,curLink->head) ){
+				mins = curLink->weight;
+				rt.head = i;
+				rt.tail = curLink->head;
+			}
+		}
+	}
+
+	return rt;
+}
+
+//删除弧
+void removeArc(HeadArray *arrs,int len,SelectArc rmd){
+	NearLink *curLink = NULL,*prevLink = NULL;
+
+	for(curLink = arrs[rmd.head].next; curLink; prevLink = curLink,curLink = curLink->next){
+		if( curLink->head == rmd.tail ){
+			if( !prevLink ){
+				arrs[rmd.head].next = curLink->next;
+			}else{
+				prevLink->next = curLink->next;
+			}
+			free(curLink);
+			break;
+		}
+	}
+
+	for(prevLink = NULL,curLink = arrs[rmd.tail].next; curLink; prevLink = curLink,curLink = curLink->next){
+		if( curLink->head == rmd.head ){
+			if( !prevLink ){
+				arrs[rmd.head].next = curLink->next;
+			}else{
+				prevLink->next = curLink->next;
+			}
+			free(curLink);
+			break;
+		}
+	}
+}
+
 //克鲁斯卡尔算法
 void MiniSpanTree_Kruskal(Vertex *header){
+	if( header && header->length ){
+		int milen = header->length,
+			curPos = 0;
+		SelectArc seledArc,
+				  *sas = (SelectArc*)malloc((milen-1) * sizeof(SelectArc));
+		
+		//选择弧
+		for(int i = 0; i < milen-1; ++i){
+			seledArc = selectMinArc(header->vertexs,milen,sas,curPos);
+			removeArc(header->vertexs,milen,seledArc);
+			sas[curPos].head = seledArc.head;
+			sas[curPos].tail = seledArc.tail;
+			++curPos;
+		}
+
+		//输出弧
+		for(int i = 0; i < milen - 1; ++i){
+			printf("%c-->%c\n", header->vertexs[sas[i].head].flag, header->vertexs[sas[i].tail].flag);
+		}
+	}
 }

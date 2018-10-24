@@ -41,7 +41,11 @@ int main(int argc,char *argv[]){
 		}
 		
 		if( type >= 2 ){//构建最小生成树
-			MiniSpanTree_PRIM(&aver,0);
+			if( strcmp(argv[1],"-b")==0 ){//普里姆算法
+				MiniSpanTree_Prim(&aver,0);
+			}else if( strcmp(argv[1],"-d")==0 ){//克鲁斯卡尔算法
+				MiniSpanTree_Kruskal(&aver);
+			}
 		}
 	}
 
