@@ -265,10 +265,9 @@ int selectMin(Closedge *arrs,int len){
 	}
 
 	for(st += 1; st < len; ++st){
-		if( arrs[st].lowcost < mins ){
+		if( arrs[st].lowcost>0 && arrs[st].lowcost<mins ){
 			rt = st;
 			mins = arrs[st].lowcost;
-			break;
 		}
 	}
 
@@ -302,7 +301,7 @@ void MiniSpanTree_PRIM(Vertex *header,int startPos){
 				cdge[k].lowcost = 0;
 				startPos = k;
 				for(NearLink *curLink = header->vertexs[k].next; curLink; curLink = curLink->next){
-					if( !isInArray(curLink->head,selectArr,curPos+1) && (cdge[curLink->head].lowcost==-1 ||  cdge[curLink->head].lowcost>0 && cdge[curLink->head].lowcost>curLink->weight) ){
+					if( (!isInArray(curLink->head,selectArr,curPos+1) && cdge[curLink->head].lowcost==-1 ||  cdge[curLink->head].lowcost>0 && cdge[curLink->head].lowcost>curLink->weight) ){
 						cdge[curLink->head].vertexPos = k;
 						cdge[curLink->head].lowcost = curLink->weight;
 					}
