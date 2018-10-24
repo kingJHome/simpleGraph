@@ -107,6 +107,18 @@ int getNextNodePos(HeadArray *vers,int curPos,int len,int *vted,int curlen){
 	return pos;
 }
 
+//未访问顶点入栈
+void enStackGraph(HeadArray *vers,int curPos,int len,int *vted,int *curlen){
+	NearLink *curLink = vers[curPos].next;
+
+	for( ; curLink; curLink = curLink->next){
+		if( !isInArray(curLink->head,vted,*curlen) ){
+			vted[*curlen] = curLink->head;
+			*curlen += 1;
+		}
+	}
+}
+
 //判断弧是不存在
 int arcNotExist(HeadArray *vers,int tail,int head){
 	int arcnot = 1;
@@ -221,7 +233,22 @@ void DFSvisitVerLink(Vertex *header,int startPos){
 //广度优先遍历接连表
 void BFSvisitVerLink(Vertex *header,int startPos){
 	int visited[header->length],
-        curPos = 0;
+        curPos = 0,
+		prevPos = 0;
     HeadArray *arrs = header->vertexs;
+	
+	visited[curPos++] = startPos;
+	while( curPos < header->length ){
+		enStackGraph(arrs,visited[prevPos],header->length,visited,&curPos);
+		++prevPos;
+	}
 
+	for( int i = 0; i < header->length; ++i){
+		if(i == 0){
+			printf("%c", arrs[visited[i]].flag);
+		}else{
+			printf("-->%c", arrs[visited[i]].flag);
+		}
+	}
+	printf("\n");
 }
