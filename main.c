@@ -35,15 +35,17 @@ int main(int argc,char *argv[]){
 				BFSvisitVerLink(&aver,0);
 			}else if( strcmp(argv[1],"-d")==0 ){//深度优先遍历
 				DFSvisitVerLink(&aver,0);
+			}else{
+				visitVerLink(&aver);
 			}
 		}else{//普通遍历
 			visitVerLink(&aver);
 		}
 		
-		if( type >= 2 ){//构建最小生成树
-			if( strcmp(argv[1],"-b")==0 ){//普里姆算法
+		if( type >= 2 && argc==3 ){//构建最小生成树
+			if( strcmp(argv[2],"-p")==0 ){//普里姆算法
 				MiniSpanTree_Prim(&aver,0);
-			}else if( strcmp(argv[1],"-d")==0 ){//克鲁斯卡尔算法
+			}else if( strcmp(argv[2],"-k")==0 ){//克鲁斯卡尔算法
 				MiniSpanTree_Kruskal(&aver);
 			}
 		}
