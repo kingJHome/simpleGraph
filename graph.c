@@ -360,10 +360,10 @@ SelectArc selectMinArc(HeadArray *arrs,int len,SelectArc *sted,int curlen){
 }
 
 //删除弧
-void removeArc(HeadArray *arrs,int len,SelectArc rmd){
-	NearLink *curLink = NULL,*prevLink = NULL;
+void removeArc(HeadArray *arrs,SelectArc rmd){
+	NearLink *curLink,*prevLink;
 
-	for(curLink = arrs[rmd.head].next; curLink; prevLink = curLink,curLink = curLink->next){
+	for(prevLink = NULL,curLink = arrs[rmd.head].next; curLink; prevLink = curLink,curLink = curLink->next){
 		if( curLink->head == rmd.tail ){
 			if( !prevLink ){
 				arrs[rmd.head].next = curLink->next;
@@ -378,7 +378,7 @@ void removeArc(HeadArray *arrs,int len,SelectArc rmd){
 	for(prevLink = NULL,curLink = arrs[rmd.tail].next; curLink; prevLink = curLink,curLink = curLink->next){
 		if( curLink->head == rmd.head ){
 			if( !prevLink ){
-				arrs[rmd.head].next = curLink->next;
+				arrs[rmd.tail].next = curLink->next;
 			}else{
 				prevLink->next = curLink->next;
 			}
@@ -399,7 +399,7 @@ void MiniSpanTree_Kruskal(Vertex *header){
 		//选择弧
 		for(int i = 0; i < milen-1; ++i){
 			seledArc = selectMinArc(header->vertexs,milen,sas,curPos);
-			removeArc(header->vertexs,milen,seledArc);
+			removeArc(header->vertexs,seledArc);
 			sas[curPos].head = seledArc.head;
 			sas[curPos].tail = seledArc.tail;
 			++curPos;
