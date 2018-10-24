@@ -297,7 +297,7 @@ void MiniSpanTree_Prim(Vertex *header,int startPos){
 
 			for(int i = 1; i < milen; ++i){
 				int k = selectMin(cdge, milen);
-				sas[curPos].head = startPos;
+				sas[curPos].head = cdge[k].vertexPos;
 				sas[curPos].tail = k;
 				selectArr[++curPos] = k;
 				cdge[k].lowcost = 0;
