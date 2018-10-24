@@ -315,3 +315,7 @@ void MiniSpanTree_PRIM(Vertex *header,int startPos){
 		}
 	}
 }
+
+//克鲁斯卡尔算法
+void MiniSpanTree_Kruskal(Vertex *header){
+}

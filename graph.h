@@ -54,5 +54,8 @@ void BFSvisitVerLink(Vertex *header,int startPos);
 //普里姆算法
 // 构建最小生成树
 void MiniSpanTree_PRIM(Vertex *header,int startPos);
+
+//克鲁斯卡尔算法
+void MiniSpanTree_Kruskal(Vertex *header);
 /*******************************end*************************************/
 #endif
