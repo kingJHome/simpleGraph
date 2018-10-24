@@ -24,6 +24,18 @@ typedef struct Vertex{
 	int length;
 }Vertex;
 
+//被选中的弧的结构
+typedef struct selectArc{
+	int head;
+	int tail;
+}SelectArc;
+
+//最小花费点
+typedef struct closedge{
+	int vertexPos;
+	int lowcost;
+}Closedge;
+
 //构建顶点图列表
 void CreateHeadArr(Vertex *header,char *content);
 
@@ -38,5 +50,9 @@ void DFSvisitVerLink(Vertex *header,int startPos);
 
 //广度优先遍历接连表
 void BFSvisitVerLink(Vertex *header,int startPos);
+
+//普里姆算法
+// 构建最小生成树
+void MiniSpanTree_PRIM(Vertex *header,int startPos);
 /*******************************end*************************************/
 #endif

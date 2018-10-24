@@ -39,6 +39,10 @@ int main(int argc,char *argv[]){
 		}else{//普通遍历
 			visitVerLink(&aver);
 		}
+		
+		if( type >= 2 ){//构建最小生成树
+			MiniSpanTree_PRIM(&aver,0);
+		}
 	}
 
 	return 0;

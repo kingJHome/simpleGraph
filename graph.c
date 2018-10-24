@@ -194,7 +194,7 @@ void visitVerLink(Vertex *header){
 
 		printf("%c", header->vertexs[i].flag);
 		for( ; curLink; curLink = curLink->next){
-			printf("-->%d", curLink->head);
+			printf("-->%d(%d)", curLink->head, curLink->weight);
 		}
 		printf("\n");
 	}
@@ -251,4 +251,68 @@ void BFSvisitVerLink(Vertex *header,int startPos){
 		}
 	}
 	printf("\n");
+}
+
+int selectMin(Closedge *arrs,int len){
+	int st = 0,rt = 0,mins;
+	
+	for( ; st < len; ++st){
+		if(arrs[st].lowcost > 0){
+			rt = st;
+			mins = arrs[st].lowcost;
+			break;
+		}
+	}
+
+	for(st += 1; st < len; ++st){
+		if( arrs[st].lowcost < mins ){
+			rt = st;
+			mins = arrs[st].lowcost;
+			break;
+		}
+	}
+
+	return rt;
+}
+
+void MiniSpanTree_PRIM(Vertex *header,int startPos){
+	if( header && header->length ){
+		int milen = header->length,
+			curPos = 0,
+			selectArr[milen];
+		SelectArc *sas = (SelectArc*)malloc((milen-1) * sizeof(SelectArc));
+		Closedge *cdge = (Closedge*)malloc(milen * sizeof(Closedge));
+
+		if( sas && cdge ){
+			selectArr[curPos] = startPos;
+			for(int i = 0; i < milen; ++i){
+				cdge[i].lowcost = -1;
+			}
+			
+			for(NearLink *curLink = header->vertexs[startPos].next; curLink; curLink = curLink->next){
+				cdge[curLink->head].vertexPos = startPos;
+				cdge[curLink->head].lowcost = curLink->weight;
+			}
+
+			for(int i = 1; i < milen; ++i){
+				int k = selectMin(cdge, milen);
+				sas[curPos].head = startPos;
+				sas[curPos].tail = k;
+				selectArr[++curPos] = k;
+				cdge[k].lowcost = 0;
+				startPos = k;
+				for(NearLink *curLink = header->vertexs[k].next; curLink; curLink = curLink->next){
+					if( !isInArray(curLink->head,selectArr,curPos+1) && (cdge[curLink->head].lowcost==-1 ||  cdge[curLink->head].lowcost>0 && cdge[curLink->head].lowcost>curLink->weight) ){
+						cdge[curLink->head].vertexPos = k;
+						cdge[curLink->head].lowcost = curLink->weight;
+					}
+				}
+			}
+
+			//输出弧
+			for(int i = 0; i < milen - 1; ++i){
+				printf("%c-->%c\n", header->vertexs[sas[i].head].flag, header->vertexs[sas[i].tail].flag);
+			}
+		}
+	}
 }
