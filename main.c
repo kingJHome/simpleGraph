@@ -30,7 +30,15 @@ int main(int argc,char *argv[]){
 		}
 
 		fclose(fp);
-		visitVerLink(&aver);
+		if( argc >= 2 ){
+			if( strcmp(argv[1],"-b")==0 ){//广度优先遍历
+				BFSvisitVerLink(&aver,0);
+			}else if( strcmp(argv[1],"-d")==0 ){//深度优先遍历
+				DFSvisitVerLink(&aver,0);
+			}
+		}else{//普通遍历
+			visitVerLink(&aver);
+		}
 	}
 
 	return 0;
