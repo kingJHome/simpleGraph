@@ -318,22 +318,52 @@ void MiniSpanTree_Prim(Vertex *header,int startPos){
 	}
 }
 
+int getNextSearchPos(SelectArc *sted,char *slarr,int len,int key){
+	int rt = -1;
+
+	for(int i = 0; i < len; ++i){
+		if(!slarr[i] && (sted[i].head==key || sted[i].tail==key)){
+			rt = sted[i].head==key ? sted[i].tail : sted[i].head;
+			slarr[i] = 1;
+			break;
+		}
+	}
+
+	return rt;
+}
+
 //不是在同一个连通分量上
 int notInOnePath(SelectArc *sted,int curlen,int head,int tail){
-	int notin = 1,headin = 0,tailin = 0;
-	
+	int notin = 1,
+		headin = 0,
+		tailin = 0;
+	char selectArr[curlen];
+
 	if( curlen ){
-		for(int i = 0; i < curlen; ++i){
-			if( !headin && (sted[i].head==head || sted[i].tail==head) ){
+		int searchPos,i = 0;
+		memset(selectArr,0,curlen);
+
+		for( ; i < curlen; ++i){
+			if(sted[i].head==head || sted[i].tail==head){
 				headin = 1;
+				selectArr[i] = 1;
+				searchPos = sted[i].head==head ? sted[i].tail : sted[i].head;
 			}
-			if( !tailin && (sted[i].head==tail || sted[i].tail==tail) ){
+		}
+		i = 0;
+		while( i < curlen-1 ){
+			searchPos = getNextSearchPos(sted,selectArr,curlen,searchPos);
+			if(searchPos==tail){
 				tailin = 1;
-			}
-			if( headin && tailin){
-				notin = 0;
+				break;
+			}else if(searchPos==-1){
 				break;
 			}
+			++i;
+		}
+
+		if( headin && tailin ){
+			notin = 0;
 		}
 	}
 
